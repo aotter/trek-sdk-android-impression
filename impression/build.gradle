@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'maven'
 }
 
 android {
@@ -42,3 +43,40 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
+
+def pomGroupId = 'com.aotter.net'// 組名
+
+def pomName = 'impression'// pomName
+
+def pomVersion = sdkVserion// 版本号
+
+def nexusUsername = nexusUsername // 用戶名
+
+def nexusPassword = nexusPassword// 密碼
+
+def pomArtifactId = "trek-sdk-android-impression"// aar包名
+
+def pomPackaging = 'aar'// 包類型
+
+def pomDescription = 'lib for trek sdk impression'// 描述
+
+def nexusRepositoryUrl = 'https://deps.aotter.net/artifactory/libs-release-local' //倉庫地址
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: nexusRepositoryUrl) {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            pom.project {
+                name pomName
+                version pomVersion
+                artifactId pomArtifactId
+                groupId pomGroupId
+                packaging pomPackaging
+                description pomDescription
+            }
+        }
+    }
+}
+
