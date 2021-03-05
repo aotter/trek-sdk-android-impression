@@ -75,6 +75,8 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun resume() {
 
+        Log.e("Lifecycle", "resume")
+
         if(view.windowVisibility == View.VISIBLE){
             val percents = ViewVisibilityPercentageCalculator.getVisibilityPercents(view)
 
