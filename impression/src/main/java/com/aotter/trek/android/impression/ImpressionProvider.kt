@@ -30,6 +30,8 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
     init {
 
+        lifecycle?.addObserver(this@ImpressionProvider)
+
         view.viewTreeObserver.addOnGlobalLayoutListener(this)
 
         view.addOnAttachStateChangeListener(this)
@@ -77,13 +79,30 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
         Log.e("Lifecycle", "resume")
 
-        if(view.windowVisibility == View.VISIBLE){
+        if(view.windowVisibility == View.VISIBLE || view.windowVisibility ==View.INVISIBLE){
+
             val percents = ViewVisibilityPercentageCalculator.getVisibilityPercents(view)
 
             Log.e("Lifecycle", percents.toString())
 
             ImpressionCountDownTimer.checkPercent(percents)
+
         }
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy(){
+
+        Log.e("Lifecycle", "destroy")
+
+        lifecycle?.removeObserver(this@ImpressionProvider)
+
+        view.viewTreeObserver.removeOnScrollChangedListener(this)
+
+        view.removeOnAttachStateChangeListener(this)
+
+        view.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
     }
 
