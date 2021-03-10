@@ -4,12 +4,11 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 
-
 object ImpressionCountDownTimer {
 
     private var countDownTimer: CountDownTimer? = null
 
-    private  var impressionRequest: ImpressionRequest = ImpressionRequest()
+    private var impressionRequest: ImpressionRequest = ImpressionRequest()
 
     private var impressionListener: ImpressionListener? = null
 
@@ -17,17 +16,16 @@ object ImpressionCountDownTimer {
 
     private const val COUNT_DOWN_INTERVAL = 1000L
 
-
     fun setImpressionRequest(impressionRequest: ImpressionRequest) {
-        ImpressionCountDownTimer.impressionRequest = impressionRequest
+        this.impressionRequest = impressionRequest
     }
 
     fun setImpressionListener(impressionListener: ImpressionListener?) {
-        ImpressionCountDownTimer.impressionListener = impressionListener
+        this.impressionListener = impressionListener
     }
 
     fun setView(view: View?) {
-        ImpressionCountDownTimer.view = view
+        this.view = view
     }
 
     fun checkPercent(percent: Int) {
@@ -38,33 +36,29 @@ object ImpressionCountDownTimer {
 
         if (percent >= startPercent) {
 
-            if (countDownTimer == null) {
+            countDownTimer = object : CountDownTimer(
+                millisInFuture,
+                COUNT_DOWN_INTERVAL
+            ) {
+                override fun onFinish() {
 
-                countDownTimer = object : CountDownTimer(
-                    millisInFuture,
-                    COUNT_DOWN_INTERVAL
-                ) {
-                    override fun onFinish() {
+                    stop()
 
-                        stop()
-
-                        view?.let {
-                            impressionListener?.onImpressionSuccess(it)
-                        }
-
+                    view?.let {
+                        impressionListener?.onImpressionSuccess(it)
                     }
 
-                    override fun onTick(millisUntilFinished: Long) {
-
-                        Log.e("onTick", millisUntilFinished.toString())
-
-                    }
                 }
 
-                countDownTimer?.start()
+                override fun onTick(millisUntilFinished: Long) {
+
+                    Log.e("onTick", millisUntilFinished.toString())
+
+                }
 
             }
 
+            countDownTimer?.start()
 
         } else {
 
@@ -76,15 +70,8 @@ object ImpressionCountDownTimer {
 
     fun stop() {
 
-        countDownTimer?.let {
-
-            it.cancel()
-
-            countDownTimer = null
-
-        }
+        countDownTimer?.cancel()
 
     }
-
 
 }

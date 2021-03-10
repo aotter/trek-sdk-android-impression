@@ -99,6 +99,11 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
             ImpressionCountDownTimer.checkPercent(percents)
 
+            if(percents == 0){
+                impressionLifeCycleListener?.onLifeCyclePause()
+                return
+            }
+
             impressionLifeCycleListener?.onLifeCycleResume()
 
         }
