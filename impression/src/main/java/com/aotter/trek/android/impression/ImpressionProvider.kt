@@ -20,13 +20,15 @@ import androidx.lifecycle.OnLifecycleEvent
  * ImpressionCountDownTimer 曝光計時器
  */
 class ImpressionProvider(private val view: View, private val lifecycle: Lifecycle? = null) :
-    LifecycleObserver, ViewTreeObserver.OnGlobalLayoutListener,
-    View.OnAttachStateChangeListener, ViewTreeObserver.OnScrollChangedListener {
+        LifecycleObserver, ViewTreeObserver.OnGlobalLayoutListener,
+        View.OnAttachStateChangeListener, ViewTreeObserver.OnScrollChangedListener {
 
     private var impressionListener: ImpressionListener? = null
 
+    private var impressionLifeCycleListener: ImpressionLifeCycleListener? = null
+
     private var impressionRequest =
-        ImpressionRequest()
+            ImpressionRequest()
 
     init {
 
@@ -39,6 +41,14 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
         view.viewTreeObserver.addOnScrollChangedListener(this)
 
         ImpressionCountDownTimer.setView(view)
+
+    }
+
+    fun impressionLifeCycleListener(@Nullable impressionLifeCycleListener: ImpressionLifeCycleListener): ImpressionProvider {
+
+        this.impressionLifeCycleListener = impressionLifeCycleListener
+
+        return this
 
     }
 
@@ -72,6 +82,8 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
         ImpressionCountDownTimer.stop()
 
+        impressionLifeCycleListener?.onLifeCyclePause()
+
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -79,7 +91,7 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
         Log.e("Lifecycle", "resume")
 
-        if(view.windowVisibility == View.VISIBLE || view.windowVisibility ==View.INVISIBLE){
+        if (view.windowVisibility == View.VISIBLE || view.windowVisibility == View.INVISIBLE) {
 
             val percents = ViewVisibilityPercentageCalculator.getVisibilityPercents(view)
 
@@ -87,12 +99,14 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
             ImpressionCountDownTimer.checkPercent(percents)
 
+            impressionLifeCycleListener?.onLifeCycleResume()
+
         }
 
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroy(){
+    fun onDestroy() {
 
         Log.e("Lifecycle", "destroy")
 
@@ -103,6 +117,8 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
         view.removeOnAttachStateChangeListener(this)
 
         view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+        impressionLifeCycleListener?.onLifeCycleDestroy()
 
     }
 
