@@ -3,7 +3,7 @@ package com.aotter.trek.android.impression
 import android.view.View
 import kotlinx.coroutines.*
 
-object ImpressionCountDownTimer:CoroutineScope by MainScope() {
+class ImpressionCountDownTimer:CoroutineScope by MainScope() {
 
     private var countDownJob: Job? = null
 

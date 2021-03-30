@@ -30,6 +30,8 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
     private var impressionRequest =
             ImpressionRequest()
 
+    private var impressionCountDownTimer = ImpressionCountDownTimer()
+
     init {
 
         lifecycle?.addObserver(this@ImpressionProvider)
@@ -40,7 +42,7 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
         view.viewTreeObserver.addOnScrollChangedListener(this)
 
-        ImpressionCountDownTimer.setView(view)
+        impressionCountDownTimer.setView(view)
 
     }
 
@@ -69,9 +71,9 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
     fun apply() {
 
-        ImpressionCountDownTimer.setImpressionRequest(this.impressionRequest)
+        impressionCountDownTimer.setImpressionRequest(this.impressionRequest)
 
-        ImpressionCountDownTimer.setImpressionListener(impressionListener)
+        impressionCountDownTimer.setImpressionListener(impressionListener)
 
     }
 
@@ -80,7 +82,7 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
         Log.e("Lifecycle", "pause")
 
-        ImpressionCountDownTimer.stop()
+        impressionCountDownTimer.stop()
 
         impressionLifeCycleListener?.onLifeCyclePause()
 
@@ -97,7 +99,7 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
             Log.e("Lifecycle", percents.toString())
 
-            ImpressionCountDownTimer.checkPercent(percents)
+            impressionCountDownTimer.checkPercent(percents)
 
             if(percents == 0){
                 impressionLifeCycleListener?.onLifeCyclePause()
@@ -155,7 +157,7 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
         lifecycle?.removeObserver(this@ImpressionProvider)
 
-        ImpressionCountDownTimer.stop()
+        impressionCountDownTimer.stop()
 
     }
 
