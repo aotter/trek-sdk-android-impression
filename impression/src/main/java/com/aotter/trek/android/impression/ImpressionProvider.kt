@@ -1,6 +1,5 @@
 package com.aotter.trek.android.impression
 
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.annotation.Nullable
@@ -80,7 +79,6 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun pause() {
 
-        Log.e("Lifecycle", "pause")
 
         impressionCountDownTimer.stop()
 
@@ -91,13 +89,11 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun resume() {
 
-        Log.e("Lifecycle", "resume")
 
         if (view.windowVisibility == View.VISIBLE || view.windowVisibility == View.INVISIBLE) {
 
             val percents = ViewVisibilityPercentageCalculator.getVisibilityPercents(view)
 
-            Log.e("Lifecycle", percents.toString())
 
             impressionCountDownTimer.checkPercent(percents)
 
@@ -115,7 +111,6 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
 
-        Log.e("Lifecycle", "destroy")
 
         lifecycle?.removeObserver(this@ImpressionProvider)
 
@@ -141,7 +136,6 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
     override fun onViewAttachedToWindow(v: View?) {
 
-        Log.e("view", "view 出現在螢幕上")
 
         view.viewTreeObserver.addOnScrollChangedListener(this)
 
@@ -151,7 +145,6 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
 
     override fun onViewDetachedFromWindow(v: View?) {
 
-        Log.e("view", "view 消失在螢幕上")
 
         view.viewTreeObserver.removeOnScrollChangedListener(this)
 
