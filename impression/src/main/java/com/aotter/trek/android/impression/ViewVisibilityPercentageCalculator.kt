@@ -53,7 +53,7 @@ import android.view.View
     }
 
     //view底部部分不可見
-    private fun viewIsPartiallyHiddenBottom(
+    fun viewIsPartiallyHiddenBottom(
         rect: Rect,
         height: Int
     ): Boolean {
@@ -61,13 +61,13 @@ import android.view.View
     }
 
     //view頂部部分不可見
-    private fun viewIsPartiallyHiddenTop(rect: Rect): Boolean {
+    fun viewIsPartiallyHiddenTop(rect: Rect): Boolean {
         return rect.top > 0
     }
 
 
     //view右邊部分不可見
-    private fun viewIsPartiallyHiddenRight(
+    fun viewIsPartiallyHiddenRight(
         rect: Rect,
         width: Int
     ): Boolean {
@@ -75,7 +75,7 @@ import android.view.View
     }
 
     //view頂部部分不可見
-    private fun viewIsPartiallyHiddenLeft(rect: Rect): Boolean {
+    fun viewIsPartiallyHiddenLeft(rect: Rect): Boolean {
         return rect.left > 0
     }
 
