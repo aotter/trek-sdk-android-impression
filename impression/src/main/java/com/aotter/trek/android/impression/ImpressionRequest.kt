@@ -25,7 +25,7 @@ class ImpressionRequest {
      */
     fun setVisibleRangePercent(@IntRange(from = 1, to = 100) percent: Int?): ImpressionRequest {
 
-        if (percent != null && percent > 0) {
+        if (percent != null && (percent in 1..100)) {
             visibleRangePercent = percent
         }
 
@@ -38,7 +38,7 @@ class ImpressionRequest {
      */
     fun millisInFuture(millisInFuture: Long?): ImpressionRequest {
 
-        if (millisInFuture != null && millisInFuture > 1000L) {
+        if (millisInFuture != null && millisInFuture > 0L) {
             this.millisInFuture = millisInFuture
         }
 
