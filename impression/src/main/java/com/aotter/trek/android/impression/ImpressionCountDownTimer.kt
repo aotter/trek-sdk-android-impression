@@ -1,17 +1,25 @@
 package com.aotter.trek.android.impression
 
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
-import kotlinx.coroutines.*
 
 class ImpressionCountDownTimer {
 
-    private var countDownJob: Job? = null
+    private var countDownTimer: CountDownTimer? = null
 
     private var impressionRequest: ImpressionRequest = ImpressionRequest()
 
     private var impressionListener: ImpressionListener? = null
 
     private var view: View? = null
+
+
+    companion object {
+
+        private const val COUNT_DOWN_INTERVAL = 1000L
+
+    }
 
     fun setImpressionRequest(impressionRequest: ImpressionRequest) {
         this.impressionRequest = impressionRequest
@@ -33,35 +41,41 @@ class ImpressionCountDownTimer {
 
         if (percent >= startPercent) {
 
-            if(countDownJob == null){
+            countDownTimer = object : CountDownTimer(
+                millisInFuture,
+                COUNT_DOWN_INTERVAL
+            ) {
+                override fun onFinish() {
 
-                countDownJob = CoroutineScope(Dispatchers.Main).launch(Dispatchers.Main) {
-
-                    delay(millisInFuture)
+                    stop()
 
                     view?.let {
                         impressionListener?.onImpressionSuccess(it)
                     }
 
-                    stop()
+                }
+
+                override fun onTick(millisUntilFinished: Long) {
+
+                    Log.e("onTick", millisUntilFinished.toString())
 
                 }
 
             }
 
-        } else{
+            countDownTimer?.start()
+
+        } else {
 
             stop()
 
         }
+
     }
 
     fun stop() {
 
-        countDownJob?.let {
-            it.cancel()
-            countDownJob = null
-        }
+        countDownTimer?.cancel()
 
     }
 
