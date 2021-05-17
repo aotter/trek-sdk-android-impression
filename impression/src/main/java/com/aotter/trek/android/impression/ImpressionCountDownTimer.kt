@@ -3,7 +3,7 @@ package com.aotter.trek.android.impression
 import android.view.View
 import kotlinx.coroutines.*
 
-class ImpressionCountDownTimer:CoroutineScope by MainScope() {
+class ImpressionCountDownTimer {
 
     private var countDownJob: Job? = null
 
@@ -35,7 +35,7 @@ class ImpressionCountDownTimer:CoroutineScope by MainScope() {
 
             if(countDownJob == null){
 
-                countDownJob = launch(Dispatchers.Main) {
+                countDownJob = CoroutineScope(Dispatchers.Main).launch(Dispatchers.Main) {
 
                     delay(millisInFuture)
 
