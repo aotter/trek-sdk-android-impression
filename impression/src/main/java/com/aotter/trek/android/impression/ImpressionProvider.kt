@@ -54,7 +54,9 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
     }
 
     fun impressionListener(@Nullable impressionListener: ImpressionListener): ImpressionProvider {
-
+        if (this.impressionListener != null) {
+            this.impressionListener = null
+        }
         this.impressionListener = impressionListener
 
         return this
