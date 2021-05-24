@@ -19,7 +19,6 @@ class ImpressionCountDownTimer : CoroutineScope by MainScope() {
 
     fun setImpressionListener(impressionListener: ImpressionListener?) {
         if (this.impressionListener != null) {
-            stop()
             this.impressionListener = null
         }
         this.impressionListener = impressionListener
