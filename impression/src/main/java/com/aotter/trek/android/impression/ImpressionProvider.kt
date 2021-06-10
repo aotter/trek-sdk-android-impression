@@ -29,7 +29,7 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
     private var impressionRequest =
             ImpressionRequest()
 
-    private var impressionCountDownTimer = ImpressionCountDownTimer()
+    private var impressionCountDownTimer = ImpressionCountDownTimer(view)
 
     init {
 
@@ -40,8 +40,6 @@ class ImpressionProvider(private val view: View, private val lifecycle: Lifecycl
         view.addOnAttachStateChangeListener(this)
 
         view.viewTreeObserver.addOnScrollChangedListener(this)
-
-        impressionCountDownTimer.setView(view)
 
     }
 
